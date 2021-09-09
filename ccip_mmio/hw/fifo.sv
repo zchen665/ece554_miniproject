@@ -14,23 +14,21 @@ module fifo
   output logic [BITS-1:0] q
   );
 
-  logic [DEPTH-1:0]queue [BITS-1:0];
+  logic [BITS-1:0]queue [DEPTH-1:0];
   // logic bitsout[BITS-1:0];
   always@(posedge clk, negedge rst_n) begin
-    if !(rst_n) begin
-      for(int i = 0; i < DEPTH-2; i++) begin
-        queue[DEPTH-1-i] <= 0;
+    if (!rst_n) begin
+      for(integer i = 0; i < DEPTH; i++) begin
+        queue[i] <= 0;
       end
-      queue[0]<= 0
     end
     if (en) begin
-      q <= queue[DEPTH-1];
-      for(int i = 0; i < DEPTH-2; i++) begin
+      for(integer i = 0; i < DEPTH-1; i++) begin
         queue[DEPTH-1-i] <= queue[DEPTH-2-i];
       end
       queue[0]<= d;
     end
   end
-
+  assign q = queue[DEPTH-1];
 
 endmodule // fifo
