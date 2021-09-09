@@ -62,13 +62,14 @@ module afu
    logic [127:0] afu_id = `AFU_ACCEL_UUID;
 
    // User register (memory mapped to address h0020) to test MMIO over CCI-P.
-   logic [63:0]  user_reg;
+   logic [63:0]  user_reg, fifo_reg;
    
    // The Rx c0 header is normally used for responses to reads from the host processor's memory.
    // For MMIO responses (i.e. when c0 mmmioRdValid or mmioWrValid is asserted), we need to 
    // cast the c0 header into a ReqMmmioHdr. Basically, these same header bits in Rx c0 are used 
    // for different purposes depending on the response type.
    t_ccip_c0_ReqMmioHdr mmio_hdr;
+   fifo fifoEXP1(.clk(clk), .rst_n(rst), .en(rx.c0.mmioWrValid),.d(user_reg),.q(fifo_reg));
    assign mmio_hdr = t_ccip_c0_ReqMmioHdr'(rx.c0.hdr);
 
    // =============================================================//   
@@ -161,7 +162,7 @@ module afu
 		    // =============================================================   
 		    
                     // Provide the 64-bit data from the user register mapped to h0020.
-                    16'h0020: tx.c2.data <= user_reg;
+                    16'h0020: tx.c2.data <= fifo_reg;
 
 		    // If the processor requests an address that is unused, return 0.
                     default:  tx.c2.data <= 64'h0;
