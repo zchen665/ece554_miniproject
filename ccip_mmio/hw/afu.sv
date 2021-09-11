@@ -69,7 +69,7 @@ module afu
    // cast the c0 header into a ReqMmmioHdr. Basically, these same header bits in Rx c0 are used 
    // for different purposes depending on the response type.
    t_ccip_c0_ReqMmioHdr mmio_hdr;
-   fifo fifoEXP1(.clk(clk), .rst_n(rst), .en(rx.c0.mmioWrValid),.d(user_reg),.q(fifo_reg));
+   fifo DUT(.clk(clk), .rst_n(rst), .en(rx.c0.mmioWrValid),.d(user_reg),.q(fifo_reg));
    assign mmio_hdr = t_ccip_c0_ReqMmioHdr'(rx.c0.hdr);
 
    // =============================================================//   
