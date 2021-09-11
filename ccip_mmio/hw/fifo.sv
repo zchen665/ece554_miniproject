@@ -22,11 +22,13 @@ module fifo
         queue[i] <= 0;
       end
     end
-    if (en) begin
-      for(integer i = 0; i < DEPTH-1; i++) begin
-        queue[DEPTH-1-i] <= queue[DEPTH-2-i];
+    else begin
+      if (en) begin
+        for(integer i = 0; i < DEPTH-1; i++) begin
+          queue[DEPTH-1-i] <= queue[DEPTH-2-i];
+        end
+        queue[0]<= d;
       end
-      queue[0]<= d;
     end
   end
   assign q = queue[DEPTH-1];
