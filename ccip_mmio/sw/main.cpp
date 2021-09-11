@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
       afu.write(USER_REG_ADDR, i);
       uint64_t result = afu.read(USER_REG_ADDR);
 
-      if (result != max(0,i-4)) {
-	cerr << "ERROR: Read from MMIO register has incorrect value " << result << " instead of " << max(0,i-4) << endl;
+      if (result != max(INT64_C(0),i-4)) {
+	cerr << "ERROR: Read from MMIO register has incorrect value " << result << " instead of " << max(INT64_C(0),i-4) << endl;
 	errors ++;
       }
     }
