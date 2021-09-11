@@ -23,9 +23,8 @@
 
 #include <cstdlib>
 #include <iostream>
-
+#include <algorithm>
 #include <opae/utils.h>
-
 #include "AFU.h"
 
 using namespace std;
@@ -58,8 +57,8 @@ int main(int argc, char *argv[]) {
       afu.write(USER_REG_ADDR, i);
       uint64_t result = afu.read(USER_REG_ADDR);
 
-      if (result != i) {
-	cerr << "ERROR: Read from MMIO register has incorrect value " << result << " instead of " << i << endl;
+      if (result != max(0,i-4)) {
+	cerr << "ERROR: Read from MMIO register has incorrect value " << result << " instead of " << max(0,i-4) << endl;
 	errors ++;
       }
     }
